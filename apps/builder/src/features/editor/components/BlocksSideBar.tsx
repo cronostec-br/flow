@@ -140,7 +140,7 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.bubbles.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(BubbleBlockType).map((type) => (
+            {Object.values(BubbleBlockType).filter(a=>a != BubbleBlockType.EMBED).map((type) => (
               <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
           </SimpleGrid>
@@ -151,7 +151,7 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.inputs.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(InputBlockType).map((type) => (
+            {Object.values(InputBlockType).filter(a=>a == InputBlockType.TEXT).map((type) => (
               <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
           </SimpleGrid>
@@ -162,7 +162,7 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.logic.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(LogicBlockType).map((type) => (
+            {Object.values(LogicBlockType).filter(a=> [LogicBlockType.AB_TEST, LogicBlockType.SCRIPT, LogicBlockType.REDIRECT].indexOf(a) == -1).map((type) => (
               <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
             ))}
           </SimpleGrid>
@@ -173,8 +173,8 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.integrations.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(IntegrationBlockType)
-              .concat(forgedBlockIds as any)
+            {Object.values([IntegrationBlockType.EMAIL, IntegrationBlockType.WEBHOOK]).concat(['cal-com'] as any)
+              //.concat(forgedBlockIds as any)
               .filter((type) => !legacyIntegrationBlocks.includes(type))
               .map((type) => (
                 <BlockCard

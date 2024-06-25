@@ -53,7 +53,7 @@ export const BlockNodeContent = ({
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       return <TextBubbleContent block={block} />
-    }
+    }/*
     case BubbleBlockType.IMAGE: {
       return <ImageBubbleContent block={block} />
     }
@@ -65,10 +65,10 @@ export const BlockNodeContent = ({
     }
     case BubbleBlockType.AUDIO: {
       return <AudioBubbleNode url={block.content?.url} />
-    }
+    }*/
     case InputBlockType.TEXT: {
       return <TextInputNodeContent options={block.options} />
-    }
+    }/*
     case InputBlockType.NUMBER: {
       return <NumberNodeContent options={block.options} />
     }
@@ -98,7 +98,7 @@ export const BlockNodeContent = ({
     }
     case InputBlockType.FILE: {
       return <FileInputContent options={block.options} />
-    }
+    }*/
     case LogicBlockType.SET_VARIABLE: {
       return <SetVariableContent block={block} />
     }
@@ -114,23 +114,24 @@ export const BlockNodeContent = ({
     case LogicBlockType.JUMP: {
       return <JumpNodeBody options={block.options} />
     }
+    /*
     case LogicBlockType.AB_TEST: {
       return <AbTestNodeBody block={block} groupId={groupId} />
-    }
+    }*/
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />
     case LogicBlockType.CONDITION:
       return <ItemNodesList block={block} indices={indices} />
-    case IntegrationBlockType.GOOGLE_SHEETS: {
+    /*case IntegrationBlockType.GOOGLE_SHEETS: {
       return <GoogleSheetsNodeContent options={block.options} />
     }
     case IntegrationBlockType.GOOGLE_ANALYTICS: {
       return <GoogleAnalyticsNodeBody action={block.options?.action} />
-    }
+    }*/
     case IntegrationBlockType.WEBHOOK: {
       return <WebhookContent block={block} />
     }
-    case IntegrationBlockType.ZAPIER: {
+    /*case IntegrationBlockType.ZAPIER: {
       return <ZapierContent block={block} />
     }
     case IntegrationBlockType.PABBLY_CONNECT: {
@@ -153,7 +154,7 @@ export const BlockNodeContent = ({
     }
     case IntegrationBlockType.ZEMANTIC_AI: {
       return <ZemanticAiNodeBody options={block.options} />
-    }
+    }*/
     default: {
       return <ForgedBlockNodeContent block={block} />
     }
