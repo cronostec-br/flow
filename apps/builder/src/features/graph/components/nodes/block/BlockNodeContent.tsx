@@ -38,7 +38,7 @@ import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/con
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
+//import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
 
 type Props = {
   block: BlockV6
@@ -156,8 +156,8 @@ export const BlockNodeContent = ({
     case IntegrationBlockType.ZEMANTIC_AI: {
       return <ZemanticAiNodeBody options={block.options} />
     }*/
-    default: {
+    /*default: {
       return <ForgedBlockNodeContent block={block} />
-    }
+    }*
   }
 }
