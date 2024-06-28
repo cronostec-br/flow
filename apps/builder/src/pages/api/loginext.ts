@@ -1,6 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/lib/prisma";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export async function createHash (message: string) {
   const data = new TextEncoder().encode(message)
@@ -11,7 +12,9 @@ export async function createHash (message: string) {
     .toString()
 }
 
-export default async function handler (req, res) {
+export default async function handler (
+  req: NextApiRequest,
+  res: NextApiResponse) {
   if (!req.query.email || req.query.s != env.ENCRYPTION_LINK_SELENE) {
     return res.status(400).json({ message: 'Not worked', email: "invalid" });
   }
@@ -27,7 +30,7 @@ export default async function handler (req, res) {
     data: {
       token: idHashed,
       expires: oneMinute,
-      identifier: req.query.email,
+      identifier: req.query.email.toString(),
     },
   })
 

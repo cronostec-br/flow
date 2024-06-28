@@ -9,7 +9,7 @@ import { RedirectNodeContent } from '@/features/blocks/logic/redirect/components
 import { SetVariableContent } from '@/features/blocks/logic/setVariable/components/SetVariableContent'
 import { TypebotLinkNode } from '@/features/blocks/logic/typebotLink/components/TypebotLinkNode'
 import { ItemNodesList } from '../item/ItemNodesList'
-/*import { UrlNodeContent } from '@/features/blocks/inputs/url/components/UrlNodeContent'
+import { UrlNodeContent } from '@/features/blocks/inputs/url/components/UrlNodeContent'
 import { GoogleSheetsNodeContent } from '@/features/blocks/integrations/googleSheets/components/GoogleSheetsNodeContent'
 import { MakeComContent } from '@/features/blocks/integrations/makeCom/components/MakeComContent'
 import { PabblyConnectContent } from '@/features/blocks/integrations/pabbly/components/PabblyConnectContent'
@@ -33,12 +33,12 @@ import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTest
 import { PictureChoiceNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode'
 import { PixelNodeBody } from '@/features/blocks/integrations/pixel/components/PixelNodeBody'
 import { ZemanticAiNodeBody } from '@/features/blocks/integrations/zemanticAi/ZemanticAiNodeBody'
-import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'*/
+import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
-//import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
+import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
 
 type Props = {
   block: BlockV6
@@ -54,7 +54,7 @@ export const BlockNodeContent = ({
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       return <TextBubbleContent block={block} />
-    }/*
+    }
     case BubbleBlockType.IMAGE: {
       return <ImageBubbleContent block={block} />
     }
@@ -66,10 +66,10 @@ export const BlockNodeContent = ({
     }
     case BubbleBlockType.AUDIO: {
       return <AudioBubbleNode url={block.content?.url} />
-    }*/
+    }
     case InputBlockType.TEXT: {
       return <TextInputNodeContent options={block.options} />
-    }/*
+    }
     case InputBlockType.NUMBER: {
       return <NumberNodeContent options={block.options} />
     }
@@ -99,7 +99,7 @@ export const BlockNodeContent = ({
     }
     case InputBlockType.FILE: {
       return <FileInputContent options={block.options} />
-    }*/
+    }
     case LogicBlockType.SET_VARIABLE: {
       return <SetVariableContent block={block} />
     }
@@ -115,24 +115,24 @@ export const BlockNodeContent = ({
     case LogicBlockType.JUMP: {
       return <JumpNodeBody options={block.options} />
     }
-    /*
+    
     case LogicBlockType.AB_TEST: {
       return <AbTestNodeBody block={block} groupId={groupId} />
-    }*/
+    }
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />
     case LogicBlockType.CONDITION:
       return <ItemNodesList block={block} indices={indices} />
-    /*case IntegrationBlockType.GOOGLE_SHEETS: {
+    case IntegrationBlockType.GOOGLE_SHEETS: {
       return <GoogleSheetsNodeContent options={block.options} />
     }
     case IntegrationBlockType.GOOGLE_ANALYTICS: {
       return <GoogleAnalyticsNodeBody action={block.options?.action} />
-    }*/
+    }
     case IntegrationBlockType.WEBHOOK: {
       return <WebhookContent block={block} />
     }
-    /*case IntegrationBlockType.ZAPIER: {
+    case IntegrationBlockType.ZAPIER: {
       return <ZapierContent block={block} />
     }
     case IntegrationBlockType.PABBLY_CONNECT: {
@@ -155,9 +155,9 @@ export const BlockNodeContent = ({
     }
     case IntegrationBlockType.ZEMANTIC_AI: {
       return <ZemanticAiNodeBody options={block.options} />
-    }*/
-    /*default: {
+    }
+    default: {
       return <ForgedBlockNodeContent block={block} />
-    }*/
+    }
   }
 }
