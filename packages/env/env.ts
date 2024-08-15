@@ -68,6 +68,7 @@ const baseEnv = {
       guessNextAuthUrlForVercelPreview,
       z.string().url()
     ),
+    ENCRYPTION_LINK_SELENE: z.string(),
     DISABLE_SIGNUP: boolean.optional().default('false'),
     ADMIN_EMAIL: z
       .string()
