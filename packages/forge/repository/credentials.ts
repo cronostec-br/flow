@@ -22,6 +22,8 @@ import { zemanticAiBlock } from '@typebot.io/zemantic-ai-block'
 import { zemanticAiCredentialsSchema } from '@typebot.io/zemantic-ai-block/schemas'
 import { nocodbBlock } from '@typebot.io/nocodb-block'
 import { nocodbCredentialsSchema } from '@typebot.io/nocodb-block/schemas'
+import { selenebotBlock } from '@typebot.io/selenebot-block'
+import { selenebotCredentialsSchema } from '@typebot.io/selenebot-block/schemas'
 
 export const forgedCredentialsSchemas = {
   [openAIBlock.id]: openAICredentialsSchema,
@@ -36,4 +38,5 @@ export const forgedCredentialsSchemas = {
   [togetherAiBlock.id]: togetherAiCredentialsSchema,
   [openRouterBlock.id]: openRouterCredentialsSchema,
   [nocodbBlock.id]: nocodbCredentialsSchema,
+  [selenebotBlock.id]: selenebotCredentialsSchema,
 }
