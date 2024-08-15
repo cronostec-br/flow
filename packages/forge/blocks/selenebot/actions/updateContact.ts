@@ -85,7 +85,7 @@ export const updateContact = createAction({
         })
         .json<SeleneBOTUpdateNameResponse>()
 
-      responseMapping?.forEach((mapping) => {
+      /*responseMapping?.forEach((mapping) => {
         if (!mapping.variableId || !mapping.item) return
 
         if (mapping.item === 'Name')
@@ -108,7 +108,7 @@ export const updateContact = createAction({
             mapping.variableId,
             res.results.map((r) => r.id)
           )
-      })
+      })*/
     },
   },
 })
