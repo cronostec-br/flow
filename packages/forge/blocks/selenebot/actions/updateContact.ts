@@ -47,6 +47,7 @@ export const updateContact = createAction({
           isRequired: true,
         }),
       })
+
     ).layout({ accordion: 'Additional Information', itemLabel: 'new', isOrdered: true }),
     responseMapping: option
       .saveResponseArray([
@@ -68,13 +69,9 @@ export const updateContact = createAction({
         name,
         projectId,
         responseMapping,
-        botId,
-        threadId
       },
       variables,
     }) => {
-      console.log("chegou threadId", threadId)
-      console.log("chegou botId", botId)
       console.log("chegou name", name)
       const res = await ky
         .post(apiBaseUrl, {
