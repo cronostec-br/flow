@@ -68,6 +68,7 @@ const baseEnv = {
       guessNextAuthUrlForVercelPreview,
       z.string().url()
     ),
+    ENCRYPTION_LINK_SELENE: z.string(),
     DISABLE_SIGNUP: boolean.optional().default('false'),
     ADMIN_EMAIL: z
       .string()
@@ -341,10 +342,9 @@ const whatsAppEnv = {
   },
 }
 
-const upstashRedis = {
+const redisEnv = {
   server: {
-    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
-    UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
+    REDIS_URL: z.string().url().optional(),
   },
 }
 
@@ -425,13 +425,13 @@ export const env = createEnv({
     ...vercelEnv.server,
     ...sleekPlanEnv.server,
     ...whatsAppEnv.server,
-    ...upstashRedis.server,
+    ...redisEnv.server,
     ...gitlabEnv.server,
     ...azureEnv.server,
     ...customOAuthEnv.server,
     ...sentryEnv.server,
     ...telemetryEnv.server,
-    ...keycloakEnv.server
+    ...keycloakEnv.server,
   },
   client: {
     ...baseEnv.client,
