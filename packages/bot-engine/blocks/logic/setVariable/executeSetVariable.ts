@@ -4,6 +4,7 @@ import {
   SetVariableBlock,
   SetVariableHistoryItem,
   Variable,
+  VariableWithUnknowValue,
 } from '@typebot.io/schemas'
 import { byId, isEmpty } from '@typebot.io/lib'
 import { ExecuteLogicResponse } from '../../../types'
@@ -17,8 +18,12 @@ import {
   parseTranscriptMessageText,
 } from '@typebot.io/logic/computeResultTranscript'
 import prisma from '@typebot.io/lib/prisma'
-import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
+import {
+  defaultSetVariableOptions,
+  sessionOnlySetVariableOptions,
+} from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 import { createCodeRunner } from '@typebot.io/variables/codeRunners'
+import { stringifyError } from '@typebot.io/lib/stringifyError'
 
 export const executeSetVariable = async (
   state: SessionState,
@@ -34,6 +39,9 @@ export const executeSetVariable = async (
     block.id
   )
   const isCustomValue = !block.options.type || block.options.type === 'Custom'
+  const isCode =
+    (!block.options.type || block.options.type === 'Custom') &&
+    (block.options.isCode ?? defaultSetVariableOptions.isCode)
   if (
     expressionToEvaluate &&
     !state.whatsApp &&
@@ -50,25 +58,30 @@ export const executeSetVariable = async (
         {
           type: 'setVariable',
           setVariable: {
-            scriptToExecute,
+            scriptToExecute: {
+              ...scriptToExecute,
+              isCode,
+            },
           },
           expectsDedicatedReply: true,
         },
       ],
     }
   }
-  const evaluatedExpression = expressionToEvaluate
-    ? evaluateSetVariableExpression(variables)(expressionToEvaluate)
-    : undefined
+  const { value, error } =
+    (expressionToEvaluate
+      ? evaluateSetVariableExpression(variables)(expressionToEvaluate)
+      : undefined) ?? {}
   const existingVariable = variables.find(byId(block.options.variableId))
   if (!existingVariable) return { outgoingEdgeId: block.outgoingEdgeId }
   const newVariable = {
     ...existingVariable,
-    value: evaluatedExpression,
+    value,
   }
   const { newSetVariableHistory, updatedState } = updateVariablesInSession({
     state,
     newVariables: [
+      ...parseColateralVariableChangeIfAny({ state, options: block.options }),
       {
         ...newVariable,
         isSessionVariable: sessionOnlySetVariableOptions.includes(
@@ -85,6 +98,16 @@ export const executeSetVariable = async (
     outgoingEdgeId: block.outgoingEdgeId,
     newSessionState: updatedState,
     newSetVariableHistory,
+    logs:
+      error && isCode
+        ? [
+          {
+            status: 'error',
+            description: 'Error evaluating Set variable code',
+            details: error,
+          },
+        ]
+        : undefined,
   }
 }
 
@@ -105,6 +128,27 @@ const evaluateSetVariableExpression =
         return parseVariables(variables)(str)
       }
     }
+(str: string): { value: unknown; error?: string } => {
+  const isSingleVariable =
+    str.startsWith('{{') && str.endsWith('}}') && str.split('{{').length === 2
+  if (isSingleVariable) return { value: parseVariables(variables)(str) }
+  // To avoid octal number evaluation
+  if (!isNaN(str as unknown as number) && /0[^.].+/.test(str))
+    return { value: str }
+  try {
+    const body = parseVariables(variables, { fieldToParse: 'id' })(str)
+    return {
+      value: createCodeRunner({ variables })(
+        body.includes('return ') ? body : `return ${body}`
+      ),
+    }
+  } catch (err) {
+    return {
+      value: parseVariables(variables)(str),
+      error: stringifyError(err),
+    }
+  }
+}
 
 const getExpressionToEvaluate =
   (state: SessionState) =>
@@ -215,7 +259,7 @@ const toISOWithTz = (date: Date, timeZone: string) => {
 }
 
 type ParsedTranscriptProps = {
-  answers: Pick<Answer, 'blockId' | 'content'>[]
+  answers: Pick<Answer, 'blockId' | 'content' | 'attachedFileUrls'>[]
   setVariableHistory: Pick<
     SetVariableHistoryItem,
     'blockId' | 'variableId' | 'value'
@@ -241,6 +285,10 @@ const parsePreviewTranscriptProps = async (
     visitedEdges: state.previewMetadata.visitedEdges ?? [],
   }
 }
+
+type UnifiedAnswersFromDB = (ParsedTranscriptProps['answers'][number] & {
+  createdAt: Date
+})[]
 
 const parseResultTranscriptProps = async (
   state: SessionState
@@ -268,6 +316,7 @@ const parseResultTranscriptProps = async (
           blockId: true,
           content: true,
           createdAt: true,
+          attachedFileUrls: true,
         },
       },
       setVariableHistory: {
@@ -282,8 +331,8 @@ const parseResultTranscriptProps = async (
   })
   if (!result) return
   return {
-    answers: result.answersV2
-      .concat(result.answers)
+    answers: (result.answersV2 as UnifiedAnswersFromDB)
+      .concat(result.answers as UnifiedAnswersFromDB)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()),
     setVariableHistory: (
       result.setVariableHistory as SetVariableHistoryItem[]
@@ -292,4 +341,31 @@ const parseResultTranscriptProps = async (
       .sort((a, b) => a.index - b.index)
       .map((edge) => edge.edgeId),
   }
+}
+
+const parseColateralVariableChangeIfAny = ({
+  state,
+  options,
+}: {
+  state: SessionState
+  options: SetVariableBlock['options']
+}): VariableWithUnknowValue[] => {
+  if (!options || (options.type !== 'Pop' && options.type !== 'Shift'))
+    return []
+  const listVariableValue = state.typebotsQueue[0].typebot.variables.find(
+    (v) => v.id === options.variableId
+  )?.value
+  const variable = state.typebotsQueue[0].typebot.variables.find(
+    (v) => v.id === options.saveItemInVariableId
+  )
+  if (!variable || !listVariableValue) return []
+  return [
+    {
+      ...variable,
+      value:
+        options.type === 'Pop'
+          ? listVariableValue.at(-1)
+          : listVariableValue.at(0),
+    },
+  ]
 }
