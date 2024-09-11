@@ -6,21 +6,21 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { SeleneBOTUpdateNameResponse } from '../types'
 
-export const addTag = createAction({
+export const sendMessage = createAction({
   baseOptions,
   auth,
-  name: 'Add Tag',
+  name: 'Send message',
   options: option.object({
-    name: option.string.layout({
-      label: 'Tag name',
-      placeholder: 'Qualified',
+    message: option.string.layout({
+      label: 'Message',
+      placeholder: 'Message',
     }),
   }),
   run: {
     server: async ({
       credentials: { apiKey },
       options: {
-        name,
+        message,
         projectId,
       },
       variables,
@@ -33,7 +33,6 @@ export const addTag = createAction({
           json: {
             projectId,
             name,
-            variables
           },
         })
         .json<SeleneBOTUpdateNameResponse>()

@@ -6,21 +6,35 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { SeleneBOTUpdateNameResponse } from '../types'
 
-export const addTag = createAction({
+export const sendTemplate = createAction({
   baseOptions,
   auth,
-  name: 'Add Tag',
+  name: "Send template",
   options: option.object({
-    name: option.string.layout({
-      label: 'Tag name',
-      placeholder: 'Qualified',
+    templateName: option.string.layout({
+      label: 'Template name',
+      placeholder: 'Template name',
     }),
+    templateParams: option.array(
+      option.object({
+        name: option.string.layout({
+          label: 'Name',
+          isRequired: true,
+        }),
+        value: option.string.layout({
+          label: 'Value',
+          isRequired: true,
+        }),
+      })
+
+    ).layout({ accordion: 'Template params', itemLabel: 'new', isOrdered: true }),
   }),
   run: {
     server: async ({
       credentials: { apiKey },
       options: {
-        name,
+        templateName,
+        templateParams,
         projectId,
       },
       variables,
@@ -32,11 +46,11 @@ export const addTag = createAction({
           },
           json: {
             projectId,
-            name,
-            variables
+            templateName,
+            templateParams
           },
         })
         .json<SeleneBOTUpdateNameResponse>()
     },
   },
-})
+}) 

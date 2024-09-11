@@ -13,6 +13,7 @@
     "@typebot.io/lib": "workspace:*"
   },
   "dependencies": {
+    "@tolgee/react": "5.19.0",
     "ky": "1.2.3"
   }
 }

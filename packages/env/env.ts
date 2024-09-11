@@ -69,7 +69,6 @@ const baseEnv = {
       guessNextAuthUrlForVercelPreview,
       z.string().url()
     ),
-    ENCRYPTION_LINK_SELENE: z.string(),
     DISABLE_SIGNUP: boolean.optional().default('false'),
     ADMIN_EMAIL: z
       .string()
@@ -461,7 +460,7 @@ export const env = createEnv({
   skipValidation:
     process.env.SKIP_ENV_CHECK === 'true' ||
     (typeof window !== 'undefined' && window.__ENV === undefined),
-  onValidationError(error) {
+  onValidationError (error) {
     console.error(
       '❌ Invalid environment variables:',
       error.flatten().fieldErrors

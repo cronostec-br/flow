@@ -6,10 +6,10 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { SeleneBOTUpdateNameResponse } from '../types'
 
-export const addTag = createAction({
+export const removeTag = createAction({
   baseOptions,
   auth,
-  name: 'Add Tag',
+  name: 'Remove Tag',
   options: option.object({
     name: option.string.layout({
       label: 'Tag name',
@@ -33,7 +33,6 @@ export const addTag = createAction({
           json: {
             projectId,
             name,
-            variables
           },
         })
         .json<SeleneBOTUpdateNameResponse>()

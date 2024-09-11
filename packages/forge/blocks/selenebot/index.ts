@@ -5,6 +5,8 @@ import { updateContact } from './actions/updateContact'
 import ky from 'ky'
 import { addTag } from './actions/addTag'
 import { removeTag } from './actions/removeTag'
+import { sendTemplate } from './actions/sendTemplate'
+import { sendMessage } from './actions/sendMessage'
 
 export const selenebotBlock = createBlock({
   id: 'selenebot',
@@ -42,5 +44,5 @@ export const selenebotBlock = createBlock({
       },
     },
   ],
-  actions: [updateContact, addTag, removeTag],
+  actions: [updateContact, addTag, removeTag, sendTemplate, sendMessage],
 })

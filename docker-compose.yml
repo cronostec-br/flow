@@ -7,6 +7,8 @@ services:
   typebot-db:
     image: postgres:14-alpine
     restart: always
+    ports:
+      - '5451:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
