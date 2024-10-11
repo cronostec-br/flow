@@ -7,6 +7,13 @@ import { addTag } from './actions/addTag'
 import { removeTag } from './actions/removeTag'
 import { sendTemplate } from './actions/sendTemplate'
 import { sendMessage } from './actions/sendMessage'
+import { selectNextAttendant } from './actions/selectNextAttendant'
+import { ticketSelectUser } from './actions/ticketSelectUser'
+import { ticketSelectQueue } from './actions/ticketSelectQueue'
+import { ticketExitBot } from './actions/ticketExitBot'
+import { ticketChangeStatus } from './actions/ticketChangeStatus'
+import { isOnWorktime } from './actions/isOnWorktime'
+import { getQueues } from './actions/getQueues'
 
 export const selenebotBlock = createBlock({
   id: 'selenebot',
@@ -14,35 +21,18 @@ export const selenebotBlock = createBlock({
   tags: ['selenebot'],
   LightLogo: SelenebotLogoLight,
   DarkLogo: SelenebotLogoDark,
-  auth,
-  fetchers: [
-    {
-      id: 'fetchProjects',
-      dependencies: [],
-      fetch: async ({ credentials }) => {
-        if (!credentials?.apiKey) return []
-
-        const url = 'https://api.zemantic.ai/v1/projects'
-
-        const response = await ky
-          .get(url, {
-            headers: {
-              Authorization: `Bearer ${credentials.apiKey}`,
-            },
-          })
-          .json()
-
-        const projectsData = response as {
-          id: string
-          name: string
-        }[]
-
-        return projectsData.map((project) => ({
-          label: project.name,
-          value: project.id,
-        }))
-      },
-    },
+  actions: [
+    updateContact,
+    addTag,
+    removeTag,
+    sendTemplate,
+    sendMessage,
+    selectNextAttendant,
+    getQueues,
+    isOnWorktime,
+    ticketChangeStatus,
+    ticketExitBot,
+    ticketSelectQueue,
+    ticketSelectUser,
   ],
-  actions: [updateContact, addTag, removeTag, sendTemplate, sendMessage],
 })

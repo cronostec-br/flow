@@ -9,11 +9,13 @@ import { SeleneBOTUpdateNameResponse } from '../types'
 export const sendMessage = createAction({
   baseOptions,
   auth,
-  name: 'Send message',
+  name: 'Enviar mensagem',
   options: option.object({
     message: option.string.layout({
-      label: 'Message',
-      placeholder: 'Message',
+      label: 'Mensagem',
+      placeholder: 'Olá, bom dia',
+      inputType: 'textarea',
+      withVariableButton: false
     }),
   }),
   run: {
@@ -21,7 +23,7 @@ export const sendMessage = createAction({
       credentials: { apiKey },
       options: {
         message,
-        projectId,
+        whatsappId,
       },
       variables,
     }) => {
@@ -31,7 +33,7 @@ export const sendMessage = createAction({
             Authorization: `Bearer ${apiKey}`,
           },
           json: {
-            projectId,
+            whatsappId,
             name,
           },
         })

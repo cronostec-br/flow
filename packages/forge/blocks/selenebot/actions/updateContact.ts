@@ -67,7 +67,7 @@ export const updateContact = createAction({
       credentials: { apiKey },
       options: {
         name,
-        projectId,
+        whatsappId,
         responseMapping,
       },
       variables,
@@ -79,7 +79,7 @@ export const updateContact = createAction({
             Authorization: `Bearer ${apiKey}`,
           },
           json: {
-            projectId,
+            whatsappId,
             name,
           },
         })

@@ -6,10 +6,10 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { SeleneBOTUpdateNameResponse } from '../types'
 
-export const updateContact = createAction({
+export const ticketSelectUser = createAction({
   baseOptions,
   auth,
-  name: 'Update Contact',
+  name: 'Select user',
   options: option.object({
     name: option.string.layout({
       label: 'New name',
@@ -67,7 +67,7 @@ export const updateContact = createAction({
       credentials: { apiKey },
       options: {
         name,
-        projectId,
+        whatsappId,
         responseMapping,
       },
       variables,
@@ -79,7 +79,7 @@ export const updateContact = createAction({
             Authorization: `Bearer ${apiKey}`,
           },
           json: {
-            projectId,
+            whatsappId,
             name,
           },
         })

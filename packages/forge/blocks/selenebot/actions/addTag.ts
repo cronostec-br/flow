@@ -1,42 +1,40 @@
 import { createAction, option } from '@typebot.io/forge'
-import { isDefined } from '@typebot.io/lib'
 import ky from 'ky'
 import { apiBaseUrl } from '../constants'
-import { auth } from '../auth'
-import { baseOptions } from '../baseOptions'
-import { SeleneBOTUpdateNameResponse } from '../types'
+import { SeleneBOTAddTagResponse } from '../types'
 
 export const addTag = createAction({
-  baseOptions,
-  auth,
-  name: 'Add Tag',
+  name: 'Adicionar Tag',
   options: option.object({
-    name: option.string.layout({
-      label: 'Tag name',
-      placeholder: 'Qualified',
-    }),
+    tags: option.array(
+      option.object({
+        name: option.string.layout({
+          label: 'Tag',
+          isRequired: true,
+          placeholder: 'Não qualificado',
+        })
+      })
+    )
   }),
   run: {
     server: async ({
-      credentials: { apiKey },
       options: {
-        name,
-        projectId,
+        tags,
       },
       variables,
     }) => {
       const res = await ky
         .post(apiBaseUrl, {
           headers: {
-            Authorization: `Bearer ${apiKey}`,
+            Authorization: `Bearer ${variables.get("token")}`,
           },
           json: {
-            projectId,
-            name,
+            ticketId: variables.get("ticketId"),
+            tags,
             variables
           },
         })
-        .json<SeleneBOTUpdateNameResponse>()
+        .json<SeleneBOTAddTagResponse>()
     },
   },
 })

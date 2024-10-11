@@ -6,13 +6,13 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { SeleneBOTUpdateNameResponse } from '../types'
 
-export const removeTag = createAction({
+export const selectNextAttendant = createAction({
   baseOptions,
   auth,
-  name: 'Remove Tag',
+  name: 'Selecionar próximo atendente',
   options: option.object({
-    name: option.string.layout({
-      label: 'Tag name',
+    queueId: option.string.layout({
+      label: 'Fila',
       placeholder: 'Qualified',
     }),
   }),
@@ -20,8 +20,8 @@ export const removeTag = createAction({
     server: async ({
       credentials: { apiKey },
       options: {
-        name,
-        projectId,
+        queueId,
+        whatsappId,
       },
       variables,
     }) => {
@@ -31,8 +31,8 @@ export const removeTag = createAction({
             Authorization: `Bearer ${apiKey}`,
           },
           json: {
-            projectId,
-            name,
+            whatsappId,
+            queueId,
           },
         })
         .json<SeleneBOTUpdateNameResponse>()

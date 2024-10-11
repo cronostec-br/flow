@@ -9,25 +9,21 @@ import { SeleneBOTUpdateNameResponse } from '../types'
 export const sendTemplate = createAction({
   baseOptions,
   auth,
-  name: "Send template",
+  name: "Enviar modelo de mensagem (meta template)",
   options: option.object({
     templateName: option.string.layout({
-      label: 'Template name',
-      placeholder: 'Template name',
+      label: 'Nome temlate',
+      placeholder: 'mensagem_boas_vindas',
     }),
     templateParams: option.array(
       option.object({
-        name: option.string.layout({
-          label: 'Name',
-          isRequired: true,
-        }),
         value: option.string.layout({
-          label: 'Value',
+          label: 'Valor',
           isRequired: true,
         }),
       })
 
-    ).layout({ accordion: 'Template params', itemLabel: 'new', isOrdered: true }),
+    ).layout({ accordion: 'Parâmetros', itemLabel: 'new', isOrdered: true }),
   }),
   run: {
     server: async ({
@@ -35,7 +31,7 @@ export const sendTemplate = createAction({
       options: {
         templateName,
         templateParams,
-        projectId,
+        whatsappId,
       },
       variables,
     }) => {
@@ -45,9 +41,10 @@ export const sendTemplate = createAction({
             Authorization: `Bearer ${apiKey}`,
           },
           json: {
-            projectId,
+            whatsappId,
             templateName,
-            templateParams
+            templateParams,
+            variables
           },
         })
         .json<SeleneBOTUpdateNameResponse>()

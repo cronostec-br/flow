@@ -3,3 +3,12 @@ export type SeleneBOTUpdateNameResponse = {
   number: string;
   id: number;
 }
+
+export type SeleneBOTAddTagResponse = {
+  status: boolean;
+}
+
+export type SeleneBOTRemoveTagResponse = {
+  status: boolean;
+}
+

@@ -6,10 +6,10 @@ import { auth } from '../auth'
 import { baseOptions } from '../baseOptions'
 import { SeleneBOTUpdateNameResponse } from '../types'
 
-export const sendTemplate = createAction({
+export const getQueues = createAction({
   baseOptions,
   auth,
-  name: "Send template",
+  name: "Get queues",
   options: option.object({
     templateName: option.string.layout({
       label: 'Template name',
@@ -35,7 +35,7 @@ export const sendTemplate = createAction({
       options: {
         templateName,
         templateParams,
-        projectId,
+        whatsappId,
       },
       variables,
     }) => {
@@ -45,7 +45,7 @@ export const sendTemplate = createAction({
             Authorization: `Bearer ${apiKey}`,
           },
           json: {
-            projectId,
+            whatsappId,
             templateName,
             templateParams
           },
