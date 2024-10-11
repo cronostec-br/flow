@@ -20,7 +20,7 @@
       "persistent": true
     },
     "build": {
-      "passThroughEnv": ["ENCRYPTION_SECRET"],
+      "passThroughEnv": ["ENCRYPTION_SECRET", "ENCRYPTION_LINK_SELENE"],
       "env": ["VERCEL_*", "NEXTAUTH_URL", "SENTRY_*"],
       "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "outputs": [

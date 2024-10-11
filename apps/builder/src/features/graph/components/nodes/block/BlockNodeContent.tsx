@@ -1,12 +1,19 @@
 import { BlockIndices, BlockV6 } from '@typebot.io/schemas'
 import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNodeContent'
 import { ScriptNodeContent } from '@/features/blocks/logic/script/components/ScriptNodeContent'
-import { ButtonsBlockNode } from '@/features/blocks/inputs/buttons/components/ButtonsBlockNode'
 import { JumpNodeBody } from '@/features/blocks/logic/jump/components/JumpNodeBody'
-import { AudioBubbleNode } from '@/features/blocks/bubbles/audio/components/AudioBubbleNode'
-import { EmbedBubbleContent } from '@/features/blocks/bubbles/embed/components/EmbedBubbleContent'
-import { ImageBubbleContent } from '@/features/blocks/bubbles/image/components/ImageBubbleContent'
 import { TextBubbleContent } from '@/features/blocks/bubbles/textBubble/components/TextBubbleContent'
+import { TextInputNodeContent } from '@/features/blocks/inputs/textInput/components/TextInputNodeContent'
+import { WebhookContent } from '@/features/blocks/integrations/webhook/components/HttpRequestContent'
+import { RedirectNodeContent } from '@/features/blocks/logic/redirect/components/RedirectNodeContent'
+import { SetVariableContent } from '@/features/blocks/logic/setVariable/components/SetVariableContent'
+import { TypebotLinkNode } from '@/features/blocks/logic/typebotLink/components/TypebotLinkNode'
+import { ItemNodesList } from '../item/ItemNodesList'
+import { UrlNodeContent } from '@/features/blocks/inputs/url/components/UrlNodeContent'
+import { GoogleSheetsNodeContent } from '@/features/blocks/integrations/googleSheets/components/GoogleSheetsNodeContent'
+import { MakeComContent } from '@/features/blocks/integrations/makeCom/components/MakeComContent'
+import { PabblyConnectContent } from '@/features/blocks/integrations/pabbly/components/PabblyConnectContent'
+import { SendEmailContent } from '@/features/blocks/integrations/sendEmail/components/SendEmailContent'
 import { VideoBubbleContent } from '@/features/blocks/bubbles/video/components/VideoBubbleContent'
 import { DateNodeContent } from '@/features/blocks/inputs/date/components/DateNodeContent'
 import { EmailInputNodeContent } from '@/features/blocks/inputs/emailInput/components/EmailInputNodeContent'
@@ -15,30 +22,23 @@ import { NumberNodeContent } from '@/features/blocks/inputs/number/components/Nu
 import { PaymentInputContent } from '@/features/blocks/inputs/payment/components/PaymentInputContent'
 import { PhoneNodeContent } from '@/features/blocks/inputs/phone/components/PhoneNodeContent'
 import { RatingInputContent } from '@/features/blocks/inputs/rating/components/RatingInputContent'
-import { TextInputNodeContent } from '@/features/blocks/inputs/textInput/components/TextInputNodeContent'
-import { UrlNodeContent } from '@/features/blocks/inputs/url/components/UrlNodeContent'
-import { GoogleSheetsNodeContent } from '@/features/blocks/integrations/googleSheets/components/GoogleSheetsNodeContent'
-import { MakeComContent } from '@/features/blocks/integrations/makeCom/components/MakeComContent'
-import { PabblyConnectContent } from '@/features/blocks/integrations/pabbly/components/PabblyConnectContent'
-import { SendEmailContent } from '@/features/blocks/integrations/sendEmail/components/SendEmailContent'
-import { WebhookContent } from '@/features/blocks/integrations/webhook/components/HttpRequestContent'
+import { AudioBubbleNode } from '@/features/blocks/bubbles/audio/components/AudioBubbleNode'
+import { EmbedBubbleContent } from '@/features/blocks/bubbles/embed/components/EmbedBubbleContent'
+import { ImageBubbleContent } from '@/features/blocks/bubbles/image/components/ImageBubbleContent'
+import { ButtonsBlockNode } from '@/features/blocks/inputs/buttons/components/ButtonsBlockNode'
 import { ZapierContent } from '@/features/blocks/integrations/zapier/components/ZapierContent'
-import { RedirectNodeContent } from '@/features/blocks/logic/redirect/components/RedirectNodeContent'
-import { SetVariableContent } from '@/features/blocks/logic/setVariable/components/SetVariableContent'
-import { TypebotLinkNode } from '@/features/blocks/logic/typebotLink/components/TypebotLinkNode'
-import { ItemNodesList } from '../item/ItemNodesList'
 import { GoogleAnalyticsNodeBody } from '@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsNodeBody'
 import { ChatwootNodeBody } from '@/features/blocks/integrations/chatwoot/components/ChatwootNodeBody'
 import { AbTestNodeBody } from '@/features/blocks/logic/abTest/components/AbTestNodeBody'
 import { PictureChoiceNode } from '@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode'
 import { PixelNodeBody } from '@/features/blocks/integrations/pixel/components/PixelNodeBody'
 import { ZemanticAiNodeBody } from '@/features/blocks/integrations/zemanticAi/ZemanticAiNodeBody'
+import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
-import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'
 
 type Props = {
   block: BlockV6
@@ -50,6 +50,7 @@ export const BlockNodeContent = ({
   indices,
   groupId,
 }: Props): JSX.Element => {
+  groupId;
   switch (block.type) {
     case BubbleBlockType.TEXT: {
       return <TextBubbleContent block={block} />
@@ -114,6 +115,7 @@ export const BlockNodeContent = ({
     case LogicBlockType.JUMP: {
       return <JumpNodeBody options={block.options} />
     }
+    
     case LogicBlockType.AB_TEST: {
       return <AbTestNodeBody block={block} groupId={groupId} />
     }
